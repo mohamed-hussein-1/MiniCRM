@@ -55,10 +55,7 @@ return [
     |
     */
 
-    'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
-    ],
+    'from' => ['address' => 'mini.crm.notifications.task@gmail.com', 'name' => 'Mini Crm '],
 
     /*
     |--------------------------------------------------------------------------

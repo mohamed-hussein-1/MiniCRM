@@ -2,8 +2,10 @@
 # Introduction
 
 Use this code to register your account at {{ config('app.name') }}
-Code : {{code}}
-registration Link : {{config('APP_URL')}}
+<br>
+Code : {{$content['code']}}
+<br>
+registration Link : {{URL::to('/register')}}
 
 Thanks,<br>
 {{ config('app.name') }}

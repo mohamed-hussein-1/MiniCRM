@@ -18,10 +18,15 @@ class EmployeeController extends Controller
          $this->middleware('auth')->only(['addCustomer','showCustomerAddition','addActionView','addAction','showCustomers','showCustomer']);
    	}
    	public function inviteEmployee(Request $request){
-   		Invi::generate($request->input('name'), "2 day", true); // Generate Invitation
+   		$invit = Invi::generate($request->input('name'), "2 day", true); // Generate Invitation
+         $invit = json_decode($invit,true);
+         if(array_key_exists('error',$invit)){
+            \Session::flash('flash_message',$invit['error']); //<--FLASH MESSAGE
+            return redirect()->back();
+         }
          $content = [
          'title'=> 'MiniCRM Employee Invitation', 
-         'code'=> 'T1231142'
+         'code'=> $invit['code']
          ];
 
          $receiverAddress = $request->input('name');
