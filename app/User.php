@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','invitation-code'
     ];
 
     /**
@@ -26,4 +26,22 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function isAdmin()
+    {
+        return $this->is_admin;
+    }
+    /*returns customers assigned by this user */
+    public function customers()
+    {
+        return $this->hasMany('App\Customer');
+    }
+
+    /**
+     * actions performed by this user
+     */
+    public function customersWithActions()
+    {
+        return $this->belongsToMany('App\Customer','actions' , 'user_id' , 'customer_id')->withPivot('type','description')->withTimestamps();
+    }
 }

@@ -60,10 +60,18 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="invitation-code" class="col-md-4 control-label">Invitation Code</label>
+                        
+                        <div class="form-group{{ $errors->has('invitation-code') ? ' has-error' : '' }}">
+                            <label for="invitation-code" class="col-md-4 control-label">Invitaiton Code</label>
+
                             <div class="col-md-6">
                                 <input id="invitation-code" type="text" class="form-control" name="invitation-code" required>
+
+                                @if ($errors->has('invitation-code'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('invitation-code') }}</strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
                         

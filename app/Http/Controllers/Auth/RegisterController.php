@@ -6,6 +6,9 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Atbox\Invi\InviServiceProvider;
+use Atbox\Invi\Facades\Invi;
+
 
 class RegisterController extends Controller
 {
@@ -36,8 +39,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        // $this->middleware('guest');
-        $this->middleware('auth');
+        $this->middleware('guest');
     }
 
     /**
@@ -48,11 +50,18 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
+        $validator =  Validator::make($data, [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
+            'invitation-code' => 'required|string|min:6'
         ]);
+        $validator->after(function($validator)use($data){
+            if(! Invi::check($data['invitation-code'],$data['email']) ){
+                $validator->errors()->add('invitation-code', 'invalid invitation-code');
+            }
+        });
+        return $validator;
     }
 
     /**
@@ -63,6 +72,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+          
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
